@@ -40,38 +40,30 @@ class Base(ndb.Expando):
         for name in include:
             #process name eg. email.private becomes email and include becomes private
             #include can be public, private
-            try:
-                name_array = name.split('.')
-                processed_name = name_array[0]
-                processed_include = name_array[1]
-            except:
-                processed_name = name
-                processed_include = None
 
             # check if this property is even allowed to be public
             # or has a value set
-            if not hasattr(self, processed_name):
+            if not hasattr(self, name):
                 continue
 
-            value = getattr(self, processed_name)
-            if type(getattr(_MODEL, processed_name)) == ndb.StructuredProperty:
+            value = getattr(self, name)
+            if type(getattr(_MODEL, name)) == ndb.StructuredProperty:
                 if isinstance(value, list):
                     items = []
                     for item in value:
-                        items.append(item.to_dict(include=item.get_private_properties()
-                        if processed_include == 'private' else item.get_public_properties()))
-                    repr_dict[processed_name] = items
+                        items.append(item.to_dict(include=item.get_public_properties()))
+                    repr_dict[name] = items
                 else:
-                    repr_dict[processed_name] = value.to_dict(include=item.get_private_properties()
-                        if processed_include == 'private' else item.get_public_properties())
+                    repr_dict[name] = value.to_dict(include=value.get_public_properties())
             elif isinstance(value, date):
-                repr_dict[processed_name] = value.isoformat()
+                repr_dict[name] = value.isoformat()
             elif isinstance(value, ndb.Key):
-                repr_dict[processed_name] = value.urlsafe()
+                repr_dict[name] = value.urlsafe()
             else:
-                repr_dict[processed_name] = value
+                repr_dict[name] = value
 
-            repr_dict['id'] = self.get_id()
+            if self._key:
+                repr_dict['id'] = self.get_id()
         return repr_dict
 
     def populate(self, **kwargs):
