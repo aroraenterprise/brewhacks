@@ -5,4 +5,5 @@ Description:
 """
 
 from .base_model import Base
-from .test_model import TestModel
+from .merchant_model import MerchantModel
+from .product_model import ProductModel
