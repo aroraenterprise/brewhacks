@@ -14,18 +14,19 @@ angular
     'ngCookies',
     'ngMessages',
     'ngResource',
-    'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'ui.router'
   ])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
-      })
-      .otherwise({
-        redirectTo: '/'
+  .config(function ($urlRouterProvider, $stateProvider) {
+    $urlRouterProvider.otherwise('/home');
+
+    $stateProvider
+
+    // HOME STATES AND NESTED VIEWS ========================================
+      .state('home', {
+        url: '/home',
+        templateUrl: '../views/main.html',
+        controller: 'MainCtrl'
       });
   });
