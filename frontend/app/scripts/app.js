@@ -25,8 +25,30 @@ angular
 
     // HOME STATES AND NESTED VIEWS ========================================
       .state('home', {
+        abstract: true,
         url: '/home',
-        templateUrl: '../views/main.html',
-        controller: 'MainCtrl'
+        controller: 'MainCtrl',
+        template: '<div class="container-fluid mimin-wrapper">' +
+        '<div ui-view="left-menu"></div>' +
+        '<div ui-view="content"></div>' +
+        '</div>',
+        resolve: {
+          '': function (DeliveryService) {
+            return DeliveryService.initialize()
+          }
+        }
+      })
+      .state('home.welcome', {
+        url: '',
+        views: {
+          'left-menu': {
+            templateUrl: '../views/left-menu.html',
+            controller: 'SidebarCtrl'
+          },
+          'content': {
+            templateUrl: '../views/main.html',
+            controller: 'WelcomeCtrl'
+          }
+        }
       });
   });
