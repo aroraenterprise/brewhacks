@@ -13,9 +13,17 @@ import android.view.View;
 
 import com.sajarora.brewhack.adapters.MyAdapter;
 
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private MyAdapter mAdapter;
+    private BackendService backend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //initialize backend
+        backend = Backend.createService();
+
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
@@ -46,8 +57,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getDataset() {
+        Call<List<Merchant>> request = backend.getMerchants();
+        request.enqueue(new Callback<List<Merchant>>() {
+            @Override
+            public void onResponse(Call<List<Merchant>> call, Response<List<Merchant>> response) {
+                mAdapter.updateDataset(response.body());
+            }
 
-        mAdapter.updateDataset();
+            @Override
+            public void onFailure(Call<List<Merchant>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     @Override

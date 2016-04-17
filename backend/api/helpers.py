@@ -56,7 +56,6 @@ def handle_error(err):
         }), err.code
 
 
-
 def make_not_found_exception():
     """Raises 404 Not Found exception
 
@@ -107,7 +106,7 @@ def make_search_list_response(reponse_list, offset=None, more=False, total_count
     }
 
 
-def make_list_response(reponse_list, cursor=None, more=False, total_count=None):
+def make_list_response(response_list, cursor=None, more=False, total_count=None):
     """Creates reponse with list of items and also meta data useful for pagination
 
     Args:
@@ -120,13 +119,14 @@ def make_list_response(reponse_list, cursor=None, more=False, total_count=None):
         dict: response to be serialized and sent to client
     """
     return {
-        'list': reponse_list,
+        'list': response_list,
         'meta': {
             'nextCursor': cursor.urlsafe() if cursor else '',
             'more': more,
             'totalCount': total_count
         }
     }
+
 
 
 
