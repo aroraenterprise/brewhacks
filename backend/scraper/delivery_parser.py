@@ -25,7 +25,7 @@ def parse_delivery(data):
         item_db = parse_product(item)
         products.append(item_db.to_dict(include=ProductModel.get_public_properties()))
 
-    return dict(merchants=merchant_dbs, products=products)
+    return 200
 
 
 def parse_merchant(merchant):

@@ -7,6 +7,7 @@ import json
 import urllib
 
 from google.appengine.api import urlfetch, memcache
+from google.appengine.ext import deferred
 
 import scraper
 from api import make_empty_ok_response, errors, make_json_ok_response
@@ -48,4 +49,5 @@ class ScraperResource(Resource):
             errors.create(500, message="No data found")
 
         # parse this data
-        return scraper.parse_delivery(data.get('data'))
+        deferred.defer(scraper.parse_delivery, data.get('data'))
+        return make_empty_ok_response()
