@@ -8,9 +8,9 @@
  * Controller of the frontendApp
  */
 angular.module('frontendApp')
-  .controller('SidebarCtrl', function ($scope, $log, $timeout, DeliveryService) {
+  .controller('SidebarCtrl', function ($scope, $log, $timeout, BackendService) {
     $scope.selectMerchant = function(item){
-      DeliveryService.selectedMerchant.active = item;
+      BackendService.selectedMerchant.active = item;
     };
 
     $scope.clock = 0;

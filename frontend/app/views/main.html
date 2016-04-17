@@ -2,7 +2,8 @@
   <div class="panel">
     <div class="panel-body">
       <div class="col-md-6 col-sm-12">
-        <h3 class="animated fadeInLeft">{{ selectedMerchant.active.summary.name + '-' + selectedMerchant.active.id}}</h3>
+        <h3 class="animated fadeInLeft"><span class="merchant-icon"><img src="{{ selectedMerchant.active.merchant_logo }}"</span>
+          {{ selectedMerchant.active.name }}</h3>
         <p class="animated fadeInDown"><span class="fa  fa-map-marker"></span> Batavia,Indonesia</p>
 
         <ul class="nav navbar-nav">

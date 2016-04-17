@@ -20,6 +20,11 @@ from api import helpers
 
 app = flask.Flask(__name__)
 
+@app.after_request
+def apply_caching(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
+
 API = helpers.Api(app)
 
 import api.v1

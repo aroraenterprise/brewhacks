@@ -33,8 +33,8 @@ angular
         '<div ui-view="content"></div>' +
         '</div>',
         resolve: {
-          '': function (DeliveryService) {
-            return DeliveryService.initialize()
+          '': function (BackendService) {
+            return BackendService.initialize()
           }
         }
       })

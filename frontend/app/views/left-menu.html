@@ -7,8 +7,9 @@
         <p class="animated fadeInRight">{{ clock | date : 'EEEE, MMM d yyyy'}}</p>
       </li>
       <li class="ripple {{ selectedMerchant.active == item ? 'active' : ''}}" ng-repeat="item in merchants">
-        <a ng-click="selectMerchant(item)" class="tree-toggle nav-header"><span class="merchant-icon"><img src="{{ item.summary.merchant_logo }}">
-        </span>{{ item.summary.name | limitTo: 15 }}
+        <a ng-click="selectMerchant(item)" class="tree-toggle nav-header"><span class="merchant-icon">
+          <img src="{{ item.merchant_logo }}">
+        </span>{{ item.name | limitTo: 15 }}
           {{item.summary.name.length > 20 ? '...' : ''}}
           <span class="fa-angle-right fa right-arrow text-right"></span>
         </a>
@@ -22,25 +23,7 @@
           <li><a href="dashboard-v2.html">Dashboard v.2</a></li>
         </ul>
       </li>
-      <li class="ripple"><a class="tree-toggle nav-header">
-        <span class="fa fa-pencil-square"></span> Ui Elements  <span class="fa-angle-right fa right-arrow text-right"></span> </a>
-        <ul class="nav nav-list tree" style="display: none;">
-          <li><a href="color.html">Color</a></li>
-          <li><a href="weather.html">Weather</a></li>
-          <li><a href="typography.html">Typography</a></li>
-          <li><a href="icons.html">Icons</a></li>
-          <li><a href="buttons.html">Buttons</a></li>
-          <li><a href="media.html">Media</a></li>
-          <li><a href="panels.html">Panels &amp; Tabs</a></li>
-          <li><a href="notifications.html">Notifications &amp; Tooltip</a></li>
-          <li><a href="badges.html">Badges &amp; Label</a></li>
-          <li><a href="progress.html">Progress</a></li>
-          <li><a href="sliders.html">Sliders</a></li>
-          <li><a href="timeline.html">Timeline</a></li>
-          <li><a href="modal.html">Modals</a></li>
-        </ul>
-      </li>
-      <li><a href="credits.html">Credits</a></li>
+      <li><a href="credits.html">Build with <i class="fa fa-heart"></i> By HackTree</a></li>
     </ul>
   </div>
 </div>
