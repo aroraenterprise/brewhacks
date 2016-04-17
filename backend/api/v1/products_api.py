@@ -18,9 +18,6 @@ class ProductsIdResource(Resource):
     def get(self, pid):
         product_db = ProductModel.query(ProductModel.product_id == pid).get()
         if product_db:
-            product_db.merchant = [MerchantModel(
-                name='Taproom New York on 3rd Avenue'
-            )]
             brewer_db = product_db.brand_key.get()
             response = product_db.to_dict(include=ProductModel.get_public_properties())
             response['brewer'] = brewer_db.name
