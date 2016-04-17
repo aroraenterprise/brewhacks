@@ -9,7 +9,7 @@ from api.models import Base
 
 class ProductModel(Base):
     merchant_keys = ndb.IntegerProperty(repeated=True)
-    description = ndb.StringProperty()
+    description = ndb.TextProperty()
     size = ndb.StringProperty()
     name = ndb.StringProperty()
     image = ndb.StringProperty()

@@ -10,7 +10,7 @@ from api.models import Base
 class MerchantModel(Base):
     location = ndb.StringProperty() # location.latitude, location.longitude
     #summary
-    description = ndb.StringProperty()
+    description = ndb.TextProperty()
     merchant_logo = ndb.StringProperty()
     name = ndb.StringProperty()
     phone = ndb.StringProperty()
