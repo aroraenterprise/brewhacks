@@ -22,7 +22,7 @@ KEY_SCRAPER_DELIVERY = 'scraper.delivery'
 class ScraperResource(Resource):
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('address', required=True)
+        parser.add_argument('address')
         args = parser.parse_args()
 
         # get delivery data

@@ -6,7 +6,7 @@ Description:
 from google.appengine.ext import ndb
 
 from api import errors
-from api.models import ProductModel, MerchantModel
+from api.models import ProductModel, MerchantModel, BrandModel
 
 
 def parse_delivery(data):
@@ -36,11 +36,6 @@ def parse_merchant(merchant):
         merchant_db = MerchantModel(key=merchant_key)
 
     summary = merchant.get('summary')
-    payment_types = []
-    if summary.get('payment_types'):
-        for payment in summary.get('payment_types'):
-            payment_types.append(payment)
-
     merchant_db.populate(**dict(
         location = ('%s,%s' % (str(merchant.get('location').get('latitude')),
                                str(merchant.get('location').get('longitude')))
@@ -53,7 +48,6 @@ def parse_merchant(merchant):
         phone = summary.get('phone'),
         num_ratings = summary.get('num_ratings'),
         overall_ratings = summary.get('overall_ratings'),
-        payment_types=payment_types
     ))
     merchant_db.put()
     return merchant_db
@@ -65,12 +59,12 @@ def parse_product(product, id=None):
     if not item_db:
         item_db = ProductModel(key=item_key)
 
-    merchant_keys = []
+    merchants = []
     if 'merchant_id' in product:
-        merchant_keys.append(str(product.get('merchant_id')))
+        merchants.append(ndb.Key(MerchantModel, product.get('merchant_id')).get())
     else:
         for id in product.get('merchant_ids'): # add all the merchant keys
-            merchant_keys.append(str(id))
+            merchants.append(ndb.Key(MerchantModel, id))
 
     brand = None
     #parse tags for breweries
@@ -78,20 +72,21 @@ def parse_product(product, id=None):
         if "brand" == tag.get('key'):
             brand = tag.get('value')[0]
 
+    brand_key = None
     if brand:
-        merchant_key = ndb.Key(MerchantModel, brand)
-        merchant_db = merchant_key.get()
-        if not merchant_db:
-            merchant_db = MerchantModel(
-                key = merchant_key,
+        brand_key = ndb.Key(BrandModel, brand)
+        brand_db = brand_key.get()
+        if not brand_db:
+            brand_db = BrandModel(
+                key = brand_key,
                 name = brand
             )
-            merchant_db.put()
-        merchant_keys.append(brand)
+            brand_db.put()
 
     # create the product model
     item_db.populate(**dict(
-        merchant_keys = merchant_keys,
+        brand_key = brand_key,
+        merchants = merchants,
         description = product.get('description'),
         size = product.get('size'),
         name = product.get('name'),

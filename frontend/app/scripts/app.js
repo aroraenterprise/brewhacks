@@ -18,7 +18,10 @@ angular
     'ngTouch',
     'ui.router',
     'chart.js',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'angularMoment',
+    'ngMap',
+    'angular-nicescroll'
   ])
   .config(function ($urlRouterProvider, $stateProvider) {
     $urlRouterProvider.otherwise('/home');

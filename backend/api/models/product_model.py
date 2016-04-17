@@ -5,10 +5,12 @@ Description:
 """
 from google.appengine.ext import ndb
 
-from api.models import Base
+from api.models import Base, MerchantModel
+
 
 class ProductModel(Base):
-    merchant_keys = ndb.StringProperty(repeated=True)
+    merchant = ndb.StructuredProperty(MerchantModel, repeated=True)
+    brand_key = ndb.KeyProperty()
     description = ndb.TextProperty()
     size = ndb.StringProperty()
     name = ndb.StringProperty()
@@ -19,6 +21,6 @@ class ProductModel(Base):
     price = ndb.FloatProperty(required=True)
     unit_price = ndb.ComputedProperty(lambda x: x.price/x.quantity)
 
-    PUBLIC_PROPERTIES = ['merchant_keys', 'description', 'size', 'name',
+    PUBLIC_PROPERTIES = ['merchant', 'brand_key', 'description', 'size', 'name',
                          'image', 'product_id', 'tags', 'quantity',
                          'price', 'unit_price']

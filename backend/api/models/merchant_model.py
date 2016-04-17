@@ -16,8 +16,6 @@ class MerchantModel(Base):
     phone = ndb.StringProperty()
     num_ratings = ndb.IntegerProperty()
     overall_ratings = ndb.IntegerProperty()
-    payment_types = ndb.StringProperty(repeated=True)
 
     PUBLIC_PROPERTIES = ['products', 'location', 'description', 'merchant_logo',
-                         'name', 'phone', 'num_ratings', 'overall_ratings',
-                         'payment_types']
+                         'name', 'phone', 'num_ratings', 'overall_ratings']

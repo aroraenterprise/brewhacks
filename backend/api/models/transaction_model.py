@@ -16,12 +16,16 @@ class TransactionModel(Base):
     job = ndb.StringProperty()
 
     product_key = ndb.KeyProperty(required=True)
-    product = ndb.StructuredProperty(ProductModel)
     merchant_key = ndb.KeyProperty(required=True)
+    product = ndb.StructuredProperty(ProductModel)
     merchant = ndb.StructuredProperty(MerchantModel)
     location = ndb.StringProperty()
-    timestamp = ndb.StringProperty()
+    timestamp = ndb.DateTimeProperty()
+
+    precipitation = ndb.IntegerProperty()
+    farenheit = ndb.IntegerProperty()
 
     PUBLIC_PROPERTIES = ['email', 'gender', 'profile', 'age_group',
                          'job', 'product_key', 'merchant_key', 'product',
-                         'merchant', 'location', 'timestamp']
+                         'merchant', 'location', 'timestamp', 'precipitation',
+                         'farenheit']

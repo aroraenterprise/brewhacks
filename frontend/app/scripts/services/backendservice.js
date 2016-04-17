@@ -17,7 +17,7 @@ angular.module('frontendApp')
 
     this.initialize = function(){
       return $http({
-        url: baseUrl + 'merchants',
+        url: baseUrl + 'brands',
         method: 'get'
       }).then(function(response){
         service.merchants = response.data.list;

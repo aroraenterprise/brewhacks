@@ -5,6 +5,7 @@ Description:
 """
 import json
 import urllib
+from datetime import datetime
 
 from flask import request
 from google.appengine.api import urlfetch
@@ -31,7 +32,8 @@ class TransactionsResource(Resource):
 
         items = [x.to_dict(include=TransactionModel.get_public_properties()) for x in
                  TransactionModel.query(TransactionModel.product_key==
-                                        ndb.Key(ProductModel, args.get('product_id'))).fetch()]
+                                        ndb.Key(ProductModel, args.get('product_id'))).order(
+                     TransactionModel.timestamp).fetch()]
         return make_list_response(items)
 
     def post(self): # lists all the products
@@ -71,6 +73,7 @@ class TransactionsResource(Resource):
 
         args['merchant'] = merchant_db
         args['product'] = product_db
+        args['timestamp'] = datetime.strptime(args.get('timestamp'), '%Y-%m-%dT%H:%M:%S')
 
         transaction_db = TransactionModel(**args)
         transaction_db.put()
