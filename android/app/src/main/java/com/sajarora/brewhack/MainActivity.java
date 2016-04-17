@@ -4,12 +4,18 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.sajarora.brewhack.adapters.MyAdapter;
 
 public class MainActivity extends AppCompatActivity {
+
+    private MyAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +32,22 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
+        RecyclerView myList = (RecyclerView) findViewById(R.id.recyclerView);
+        myList.setLayoutManager(layoutManager);
+
+        // specify an adapter (see also next example)
+        mAdapter = new MyAdapter();
+        myList.setAdapter(mAdapter);
+        getDataset(); //load all products
+    }
+
+    private void getDataset() {
+
+        mAdapter.updateDataset();
     }
 
     @Override
