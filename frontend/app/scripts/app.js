@@ -16,7 +16,9 @@ angular
     'ngResource',
     'ngSanitize',
     'ngTouch',
-    'ui.router'
+    'ui.router',
+    'chart.js',
+    'ui.bootstrap'
   ])
   .config(function ($urlRouterProvider, $stateProvider) {
     $urlRouterProvider.otherwise('/home');

@@ -17,9 +17,13 @@ class MerchantsResource(Resource):
         merchants = [x.to_dict(include=MerchantModel.get_public_properties())
                      for x in MerchantModel.query().fetch()]
 
+        final_merchants = []
         for merchant in merchants:
             results = [x.to_dict(ProductModel.get_public_properties()) for x in
-                       ProductModel.query(ProductModel.merchant_keys == int(merchant.get('id'))).fetch()]
+                       ProductModel.query(ProductModel.merchant_keys == merchant.get('id')).fetch()]
             merchant['products'] = results
-        return make_list_response(merchants)
+            if len(results) > 0:
+                final_merchants.append(merchant)
+
+        return make_list_response(final_merchants)
 

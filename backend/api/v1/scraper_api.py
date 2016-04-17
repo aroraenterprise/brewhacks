@@ -26,28 +26,39 @@ class ScraperResource(Resource):
         args = parser.parse_args()
 
         # get delivery data
-        client = memcache.Client()
+        # client = memcache.Client()
+        #
+        # data = client.get(KEY_SCRAPER_DELIVERY + args.get('address'))
 
-        data = client.get(KEY_SCRAPER_DELIVERY + args.get('address'))
+        # https://www.delivery.com/api/data/search?
+        # section=beer&address=119%20W%2024th%20St%2C%2010011&
+        # order_type=delivery&
+        # order_time=ASAP&
+        # limit_if_segmented=20&
+        # search_type=Alcohol&
+        # iso=true&client_id=MDlkMzY3Nzg3MjU1ZjRkNmY4OWZjNDA0NjBjMTI0MWZl
 
         query_params = urllib.urlencode(dict(
             section='beer',
+            limit_if_segmented=20,
+            subsection='lager',
             address=args.get('address'),
             order_time='ASAP',
-            search_type='Alcohol',
+            search_type='alcohol',
             client_id='brewhacks2016'
         ))
-        if not data:
-            url = "https://www.delivery.com/api/data/search?%s" % query_params
-            result = urlfetch.fetch(url)
-            if result.status_code == 200:
-                data = json.loads(result.content)
-                if data:
-                    client.set(KEY_SCRAPER_DELIVERY + args.get('address'), data)
+        # if not data:
+        url = "https://www.delivery.com/api/data/search?section=beer&subsection=lager&address=119%20W%2024th%20St%2C%2010011&order_type=delivery&order_time=ASAP&limit_if_segmented=20&search_type=Alcohol&iso=true&client_id=MDlkMzY3Nzg3MjU1ZjRkNmY4OWZjNDA0NjBjMTI0MWZl"
+        result = urlfetch.fetch(url)
+        if result.status_code == 200:
+            data = json.loads(result.content)
+                # if data:
+                #     client.set(KEY_SCRAPER_DELIVERY + args.get('address'), data)
 
-        if not data:
-            errors.create(500, message="No data found")
+        # if not data:
+        #     errors.create(500, message="No data found")
 
         # parse this data
-        deferred.defer(scraper.parse_delivery, data.get('data'))
-        return make_empty_ok_response()
+        # deferred.defer(scraper.parse_delivery, data.get('data'))
+        data = scraper.parse_delivery(data.get('data'))
+        return data

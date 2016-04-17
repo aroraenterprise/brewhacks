@@ -8,7 +8,7 @@ from google.appengine.ext import ndb
 from api.models import Base
 
 class ProductModel(Base):
-    merchant_keys = ndb.IntegerProperty(repeated=True)
+    merchant_keys = ndb.StringProperty(repeated=True)
     description = ndb.TextProperty()
     size = ndb.StringProperty()
     name = ndb.StringProperty()

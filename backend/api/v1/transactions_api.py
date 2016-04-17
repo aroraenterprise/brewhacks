@@ -17,11 +17,21 @@ from main import API
 from flask_restful import Resource
 import pydash as _
 
+from flask_restful import reqparse
+
 
 @API.resource('/api/v1/transactions')
 class TransactionsResource(Resource):
     def get(self):
-        items = [x.to_dict(include=TransactionModel.get_public_properties()) for x in TransactionModel.query().fetch()]
+        parser = reqparse.RequestParser()
+        parser.add_argument('product_id', required=True)
+        args = parser.parse_args()
+
+        # return ndb.Key(ProductModel, args.get('product_id')).get().to_dict(include=ProductModel.get_public_properties())
+
+        items = [x.to_dict(include=TransactionModel.get_public_properties()) for x in
+                 TransactionModel.query(TransactionModel.product_key==
+                                        ndb.Key(ProductModel, args.get('product_id'))).fetch()]
         return make_list_response(items)
 
     def post(self): # lists all the products
@@ -65,3 +75,8 @@ class TransactionsResource(Resource):
         transaction_db = TransactionModel(**args)
         transaction_db.put()
         return transaction_db.to_dict(include=TransactionModel.get_public_properties())
+
+    def delete(self):
+        keys = TransactionModel.query().fetch(keys_only=True)
+        ndb.delete_multi(keys)
+        return make_empty_ok_response()

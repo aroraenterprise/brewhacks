@@ -67,10 +67,27 @@ def parse_product(product, id=None):
 
     merchant_keys = []
     if 'merchant_id' in product:
-        merchant_keys.append(product.get('merchant_id'))
+        merchant_keys.append(str(product.get('merchant_id')))
     else:
         for id in product.get('merchant_ids'): # add all the merchant keys
-            merchant_keys.append(id)
+            merchant_keys.append(str(id))
+
+    brand = None
+    #parse tags for breweries
+    for tag in product.get('tags'):
+        if "brand" == tag.get('key'):
+            brand = tag.get('value')[0]
+
+    if brand:
+        merchant_key = ndb.Key(MerchantModel, brand)
+        merchant_db = merchant_key.get()
+        if not merchant_db:
+            merchant_db = MerchantModel(
+                key = merchant_key,
+                name = brand
+            )
+            merchant_db.put()
+        merchant_keys.append(brand)
 
     # create the product model
     item_db.populate(**dict(
